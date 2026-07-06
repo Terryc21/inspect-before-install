@@ -47,7 +47,7 @@ bash install.sh
 
 Restart Claude Code (or start a new session) to pick up the skill.
 
-`install.sh` symlinks `SKILL.md` and `references/` into `~/.claude/skills/inspect-before-install/`. Because it's a symlink install, **keep the clone somewhere permanent** — deleting it breaks the skill, and a later `git pull` updates it in place. To remove it: `bash uninstall.sh`.
+`install.sh` symlinks `SKILL.md` and `references/` into `~/.claude/skills/inspect-before-install/`, and the slash command into `~/.claude/commands/` so `/inspect-before-install` appears in the prompt picker. Because it's a symlink install, **keep the clone somewhere permanent** — deleting it breaks the skill, and a later `git pull` updates it in place. To remove it: `bash uninstall.sh`.
 
 > Yes, the irony is intended: before you run *this* repo's `install.sh`, read it. It's short — it only creates two symlinks, makes no network calls, and touches nothing outside `~/.claude/skills/`.
 
