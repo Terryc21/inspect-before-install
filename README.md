@@ -7,6 +7,8 @@
 [![GitHub issues](https://img.shields.io/github/issues/Terryc21/inspect-before-install)](https://github.com/Terryc21/inspect-before-install/issues)
 [![Last commit](https://img.shields.io/github/last-commit/Terryc21/inspect-before-install)](https://github.com/Terryc21/inspect-before-install/commits/main)
 
+> **TL;DR** — Before you run a stranger's install command, this Claude Code skill clones the repo in isolation, reads every script and agent-instruction file, scans for both hidden malice *and* dangerous-by-design behavior, and hands you a pass/fail checklist plus a plain verdict — then stops and lets you decide. Inspect first, execute second. **[See a real audit it produced →](examples/example-report.md)**
+
 **Read the install script before you run it.** A [Claude Code](https://claude.com/claude-code) skill that audits a third-party repo — a skill, MCP server, plugin, CLI tool, or dotfiles — *before* you run its install command, then stops and reports so you can decide.
 
 Running a stranger's `install.sh` (or `npx … add`, or `curl … | bash`) is a real trust decision, not a formality. A clean-looking installer can hide a second-stage download, a package-manager lifecycle hook, or an agent-instruction file that tells Claude to exfiltrate your data. And a repo with *perfectly clean code* can still be something you shouldn't run casually — because of what it's designed to do when it works (spend money, act on an account, evade a service's bot detection).
