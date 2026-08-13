@@ -33,7 +33,9 @@ Then it ends with a **blocking checklist** — any single `FAIL` stops auto-appr
 
 > It is a significantly-better-than-nothing review, not a guarantee. It reliably catches careless and obvious-malicious patterns; it cannot promise safety against a determined attacker (runtime dependency compromise, conditional logic, subtle injection) or assess service-side consequences like ToS enforcement. The skill says so, every time.
 
-The ten-step method was hardened against five real repos across four shapes — a symlink skill, an npm MCP server, a Go CLI, a `curl | bash` dotfiles tool, and a browser-automation MCP. Each surfaced a gap that's now part of the method. See [`references/inspection-method.md`](references/inspection-method.md) for the full method.
+The seven points above are a summary. [`references/inspection-method.md`](references/inspection-method.md) is the single source of truth — it holds the full ten-step method and the blocking checklist, and it wins wherever this README or `SKILL.md` is terser or out of date.
+
+The ten-step method was hardened against five real repos across four shapes — a symlink skill, an npm MCP server, a Go CLI, a `curl | bash` dotfiles tool, and a browser-automation MCP. Each surfaced a gap that's now part of the method.
 
 **See it in action:** [`examples/example-report.md`](examples/example-report.md) is a real audit run — it shows the blocking checklist, the two-track verdict, and the "the install command isn't the repo you're reading" catch.
 
@@ -49,9 +51,11 @@ bash install.sh
 
 Restart Claude Code (or start a new session) to pick up the skill.
 
-`install.sh` symlinks `SKILL.md` and `references/` into `~/.claude/skills/inspect-before-install/`, and the slash command into `~/.claude/commands/` so `/inspect-before-install` appears in the prompt picker. Because it's a symlink install, **keep the clone somewhere permanent** — deleting it breaks the skill, and a later `git pull` updates it in place. To remove it: `bash uninstall.sh`.
+`install.sh` symlinks `SKILL.md`, `references/`, and `examples/` into `~/.claude/skills/inspect-before-install/`, and the slash command into `~/.claude/commands/` so `/inspect-before-install` appears in the prompt picker. Because it's a symlink install, **keep the clone somewhere permanent** — deleting it breaks the skill, and a later `git pull` updates it in place. To remove it: `bash uninstall.sh`.
 
-> Yes, the irony is intended: before you run *this* repo's `install.sh`, read it. It's short — it only creates two symlinks, makes no network calls, and touches nothing outside `~/.claude/skills/`.
+Symlinking the whole clone instead — `ln -s /path/to/inspect-before-install ~/.claude/skills/inspect-before-install` — also works, and is what you get if you installed by hand. Claude Code only needs `SKILL.md` at the skill root; the tradeoff is that `.git/`, `install.sh`, and `LICENSE` end up visible inside your skills tree. Either layout is fine; `uninstall.sh` handles both.
+
+> Yes, the irony is intended: before you run *this* repo's `install.sh`, read it. It's short — it only creates symlinks, makes no network calls, and touches nothing outside `~/.claude/skills/` and `~/.claude/commands/`.
 
 ## Usage
 
