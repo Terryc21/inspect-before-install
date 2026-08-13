@@ -7,7 +7,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/Terryc21/inspect-before-install)](https://github.com/Terryc21/inspect-before-install/issues)
 [![Last commit](https://img.shields.io/github/last-commit/Terryc21/inspect-before-install)](https://github.com/Terryc21/inspect-before-install/commits/main)
 
-> **TL;DR** — Before you run a stranger's install command, this Claude Code skill clones the repo in isolation, reads every script and agent-instruction file, scans for both hidden malice *and* dangerous-by-design behavior, and hands you a pass/fail checklist plus a plain verdict — then stops and lets you decide. Inspect first, execute second. **[See a real audit it produced →](examples/example-report.md)**
+> **TL;DR** — Before you run a stranger's install command, this Claude Code skill clones the repo in isolation and reads it: every script, every agent-instruction file, every dependency hook. It reports two risks separately — whether the code is *malicious*, and whether it's *dangerous by design* (spends money, acts on your accounts, ships bot-detection evasion) — because clean code can still be something you shouldn't run. You get an eleven-line blocking checklist where any single `FAIL` stops auto-approval, a two-track verdict, and an honest statement of what the pass can't catch. Then it stops and asks. Inspect first, execute second. **[See a real audit it produced →](examples/example-report.md)**
 
 **Read the install script before you run it.** A [Claude Code](https://claude.com/claude-code) skill that audits a third-party repo — a skill, MCP server, plugin, CLI tool, or dotfiles — *before* you run its install command, then stops and reports so you can decide.
 
@@ -89,7 +89,6 @@ Workflow & meta skills:
 - [prompter](https://github.com/Terryc21/prompter) — rewrites your prompts for clarity before they run.
 - [unforget](https://github.com/Terryc21/unforget) — a single source of truth for deferred work, so you don't lose track of what you've punted.
 - [tutorial-creator](https://github.com/Terryc21/tutorial-creator) — generates personalized coding lessons from your own codebase.
-- [xcode-workflow-skills](https://github.com/Terryc21/xcode-workflow-skills) — a collection of Xcode / Claude Code skills.
 
 ---
 
