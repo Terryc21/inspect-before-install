@@ -82,6 +82,10 @@ are even looking at. In brief:
     anti-detection/ToS-evasion tooling? What is its credential/session model? Is there
     a stakes-vs-provenance mismatch? Report these SEPARATELY from malice findings.
 
+11. **Check release/tag signing** — are releases tagged, and are those tags signed by a
+    key you can attribute? An unsigned tag on a high-authority tool means the version you
+    install is only as trustworthy as the account that pushed it.
+
 ## How to report
 
 End with the two-part output described at the bottom of

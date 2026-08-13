@@ -182,3 +182,7 @@ Then STOP and ask me whether to proceed. If I approve, prefer cloning to a **per
 location (e.g. `~/.claude/skill-sources/<name>`) and running the install from there, rather
 than from the temp clone — so it survives reboots and scratchpad cleanup. Note the reviewed SHA
 so a future update can be re-inspected against it.
+
+11. **Check the repo's release/tag signing** — are releases tagged, and are tags signed
+    by a key you can attribute? An unsigned tag on a high-authority tool means the
+    version you install is only as trustworthy as the account that pushed it.
