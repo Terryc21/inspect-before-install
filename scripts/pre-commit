@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+#
+# Pre-commit drift checks for inspect-before-install.
+#
+# The ten-step method and the blocking checklist exist in more than one file by
+# design: references/inspection-method.md is the source of truth, SKILL.md carries
+# an abridged copy, and examples/example-report.md shows the checklist filled in.
+# Hand-maintained copies drift silently — that is exactly how the example report
+# lost checklist item 11 (the operational blast-radius line) without anyone noticing.
+#
+# These checks compare the copies against each other and fail the commit on a
+# mismatch. They count structure, not prose, so ordinary wording edits don't trip them.
+#
+# Install:   bash install.sh   (wires this up as .git/hooks/pre-commit)
+# Bypass:    git commit --no-verify
+
+set -euo pipefail
+
+REPO_DIR="$(git rev-parse --show-toplevel)"
+cd "$REPO_DIR"
+
+SPEC="references/inspection-method.md"
+SKILL="SKILL.md"
+EXAMPLE="examples/example-report.md"
+README="README.md"
+INSTALL="install.sh"
+
+fail=0
+
+report() {
+  # report <name> <expected> <actual> <hint>
+  if [ "$2" -ne "$3" ]; then
+    echo "  ✗ $1: expected $2, found $3"
+    echo "      $4"
+    fail=1
+  else
+    echo "  ✓ $1 ($2)"
+  fi
+}
+
+echo "Running inspect-before-install drift checks..."
+
+# 1. Step-count parity: the abridged list in SKILL.md must cover every step in the spec.
+spec_steps=$(grep -cE '^[0-9]+\. \*\*' "$SPEC" || true)
+skill_steps=$(grep -cE '^[0-9]+\. \*\*' "$SKILL" || true)
+report "step counts ($SKILL vs $SPEC)" "$spec_steps" "$skill_steps" \
+  "A step was added or removed in one file but not the other."
+
+# 2. Checklist parity: the example report must exercise every blocking-checklist item.
+spec_items=$(grep -c '^- \[ \]' "$SPEC" || true)
+example_items=$(grep -c '^- \[x\]' "$EXAMPLE" || true)
+report "checklist items ($EXAMPLE vs $SPEC)" "$spec_items" "$example_items" \
+  "The example report must show every checklist item, or it stops being a usable template."
+
+# 3. Symlink-count parity: the README's install description must match what install.sh does.
+actual_links=$(grep -c 'ln -s .\$REPO_DIR/.* .\$SKILL_DIR' "$INSTALL" || true)
+claimed_links=$(grep -o 'symlinks `[^.]*\.md`, `[^`]*`, and `[^`]*`' "$README" \
+  | grep -o '`[^`]*`' | wc -l | tr -d ' ')
+report "symlink count ($README vs $INSTALL)" "$actual_links" "$claimed_links" \
+  "install.sh changed which paths it links; update the README sentence at 'install.sh symlinks ...'."
+
+if [ "$fail" -ne 0 ]; then
+  echo
+  echo "Commit blocked: the copies have drifted apart."
+  echo "$SPEC is the source of truth — reconcile against it, then re-commit."
+  echo "To commit anyway: git commit --no-verify"
+  exit 1
+fi
+
+echo "All drift checks passed."

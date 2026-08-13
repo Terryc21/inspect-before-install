@@ -34,6 +34,19 @@ if [ -e "$COMMANDS_DIR/$SKILL_NAME.md" ] || [ -L "$COMMANDS_DIR/$SKILL_NAME.md" 
 fi
 ln -s "$REPO_DIR/commands/$SKILL_NAME.md" "$COMMANDS_DIR/$SKILL_NAME.md"
 
+# Wire up the drift checks as a pre-commit hook, but only when installing from a
+# git clone (a tarball download has no .git dir). Never clobber an existing hook.
+if [ -d "$REPO_DIR/.git" ]; then
+  HOOK="$REPO_DIR/.git/hooks/pre-commit"
+  if [ -e "$HOOK" ]; then
+    echo "Note: $HOOK already exists — leaving it alone."
+    echo "      To use the drift checks, call scripts/pre-commit from it."
+  else
+    ln -s "../../scripts/pre-commit" "$HOOK"
+    echo "Installed: $HOOK -> scripts/pre-commit (drift checks)"
+  fi
+fi
+
 echo "Installed: $SKILL_DIR/SKILL.md -> $REPO_DIR/SKILL.md"
 echo "Installed: $SKILL_DIR/references -> $REPO_DIR/references"
 echo "Installed: $SKILL_DIR/examples -> $REPO_DIR/examples"
