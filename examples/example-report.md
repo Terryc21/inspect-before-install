@@ -59,6 +59,7 @@ copy the files into `~/.claude/skills/`, done — which sidesteps the unaudited 
 - [x] No obfuscated blobs or homoglyph/bidi tricks
 - [x] HTML/JS assets have no phone-home surface
 - [x] Provenance adequate for the trust level
+- [x] Operational blast radius acceptable — read-only static scanner; no money/account/destructive authority, no evasion tooling, no credentials held
 
 ## Verdict
 
