@@ -59,6 +59,38 @@ claimed_links=$(grep -o 'symlinks `[^.]*\.md`, `[^`]*`, and `[^`]*`' "$README" \
 report "symlink count ($README vs $INSTALL)" "$actual_links" "$claimed_links" \
   "install.sh changed which paths it links; update the README sentence at 'install.sh symlinks ...'."
 
+# 4. Prose parity: every "ten-step" / "all ten steps" reference must name the real count.
+# Checks 1-3 compare counts to counts, so they pass a commit that renumbers the method
+# while leaving the prose describing it stale — which is exactly what happened when a
+# step 11 was added and four files still read "ten-step".
+word_for() {
+  case "$1" in
+    1) echo one ;;   2) echo two ;;    3) echo three ;;  4) echo four ;;
+    5) echo five ;;  6) echo six ;;    7) echo seven ;;  8) echo eight ;;
+    9) echo nine ;;  10) echo ten ;;   11) echo eleven ;; 12) echo twelve ;;
+    *) echo "" ;;
+  esac
+}
+expected_word="$(word_for "$spec_steps")"
+NUMWORDS='one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve'
+
+if [ -z "$expected_word" ]; then
+  echo "  ⚠ step-count prose: $spec_steps steps has no number-word mapping — skipping check 4"
+else
+  # Both phrasings: "<word>-step" / "<word> step" and "all <word> steps".
+  stale=$(grep -rnoiE "\\b($NUMWORDS)([- ])step|\\ball ($NUMWORDS) steps\\b" \
+            --include="*.md" . 2>/dev/null \
+          | grep -viE ":(all )?$expected_word" || true)
+  if [ -n "$stale" ]; then
+    echo "  ✗ step-count prose: found reference(s) not matching \"$expected_word\" ($spec_steps steps)"
+    echo "$stale" | sed 's/^/      /'
+    echo "      The method has $spec_steps steps; update the prose to \"$expected_word-step\"."
+    fail=1
+  else
+    echo "  ✓ step-count prose (\"$expected_word-step\", $spec_steps steps)"
+  fi
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo
   echo "Commit blocked: the copies have drifted apart."

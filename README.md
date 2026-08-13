@@ -55,7 +55,7 @@ Restart Claude Code (or start a new session) to pick up the skill.
 
 Symlinking the whole clone instead — `ln -s /path/to/inspect-before-install ~/.claude/skills/inspect-before-install` — also works, and is what you get if you installed by hand. Claude Code only needs `SKILL.md` at the skill root; the tradeoff is that `.git/`, `install.sh`, and `LICENSE` end up visible inside your skills tree. Either layout is fine; `uninstall.sh` handles both.
 
-If you installed from a git clone, `install.sh` also symlinks `scripts/pre-commit` into `.git/hooks/` (it won't overwrite a hook you already have). That hook guards the parts of this repo that exist in more than one file — the ten-step method, the blocking checklist, and the README's description of what `install.sh` links — and fails the commit when the copies disagree. Bypass with `git commit --no-verify`.
+If you installed from a git clone, `install.sh` also symlinks `scripts/pre-commit` into `.git/hooks/` (it won't overwrite a hook you already have). That hook guards the parts of this repo that exist in more than one file — the ten-step method, the blocking checklist, the README's description of what `install.sh` links, and the prose that names the step count — and fails the commit when the copies disagree. Bypass with `git commit --no-verify`.
 
 > Yes, the irony is intended: before you run *this* repo's `install.sh`, read it. It's short — it only creates symlinks, makes no network calls, and touches nothing outside `~/.claude/skills/`, `~/.claude/commands/`, and this repo's own `.git/hooks/`.
 
