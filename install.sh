@@ -18,8 +18,13 @@ if [ -e "$SKILL_DIR/references" ] || [ -L "$SKILL_DIR/references" ]; then
   rm -rf "$SKILL_DIR/references"
 fi
 
+if [ -e "$SKILL_DIR/examples" ] || [ -L "$SKILL_DIR/examples" ]; then
+  rm -rf "$SKILL_DIR/examples"
+fi
+
 ln -s "$REPO_DIR/SKILL.md" "$SKILL_DIR/SKILL.md"
 ln -s "$REPO_DIR/references" "$SKILL_DIR/references"
+ln -s "$REPO_DIR/examples" "$SKILL_DIR/examples"
 
 # Also register the slash command so /inspect-before-install shows in the prompt picker.
 # The skill (above) lets Claude auto-invoke it; the command file makes it explicitly typeable.
@@ -31,6 +36,7 @@ ln -s "$REPO_DIR/commands/$SKILL_NAME.md" "$COMMANDS_DIR/$SKILL_NAME.md"
 
 echo "Installed: $SKILL_DIR/SKILL.md -> $REPO_DIR/SKILL.md"
 echo "Installed: $SKILL_DIR/references -> $REPO_DIR/references"
+echo "Installed: $SKILL_DIR/examples -> $REPO_DIR/examples"
 echo "Installed: $COMMANDS_DIR/$SKILL_NAME.md -> $REPO_DIR/commands/$SKILL_NAME.md"
 echo "Keep this clone in place — the skill reads from it via symlink."
 echo "Restart Claude Code to pick up the new skill and /$SKILL_NAME command."
